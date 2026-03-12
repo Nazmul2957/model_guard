@@ -1,1 +1,12 @@
-TODO: Add your license here.
+
+This single file includes everything a developer needs:
+
+- Package description
+- Features
+- Installation instructions
+- Example usage for single and list parsing
+- Fake API client for testing
+- Flutter widget demo
+- SafeParser logging example
+
+---

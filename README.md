@@ -1,39 +1,165 @@
-<!--
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
+# model_guard
 
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/tools/pub/writing-package-pages).
+**Automatic JSON parser for Flutter/Dart** that safely parses API responses and logs **model name + field name + invalid value** whenever parsing fails.
 
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/to/develop-packages).
--->
+It helps developers catch errors in JSON parsing **without crashing the app**, making your API handling more robust.
 
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
+---
 
 ## Features
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
+- Automatically logs parsing errors for each field
+- Works for single objects and lists
+- Minimal setup with any API client
+- Compatible with Flutter and Dart
 
-## Getting started
+---
 
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
+## Installation
 
-## Usage
+Add this to your `pubspec.yaml`:
 
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder.
+```yaml
+dependencies:
+  model_guard:
+    git:
+      url: https://github.com/YOUR_GITHUB_USERNAME/model_guard.git
 
-```dart
-const like = 'sample';
-```
+Then run:
+    flutter pub get
 
-## Additional information
+Usage Example
+1. Define your model
+import 'package:model_guard/guard_model.dart';
 
-TODO: Tell users more about the package: where to find more information, how to
-contribute to the package, how to file issues, what response they can expect
-from the package authors, and more.
+class Product implements GuardModel {
+  final int id;
+  final String title;
+  final double price;
+
+  Product({
+    required this.id,
+    required this.title,
+    required this.price,
+  });
+
+  factory Product.fromJson(Map<String, dynamic> json) {
+    return Product(
+      id: json['id'] ?? 0,
+      title: json['title'] ?? '',
+      price: (json['price'] ?? 0).toDouble(),
+    );
+  }
+
+  @override
+  GuardModel fromJson(Map<String, dynamic> json) => Product.fromJson(json);
+}
+
+2. Wrap your API client
+
+import 'package:model_guard/api_wrapper.dart';
+import 'example/product.dart';
+
+final api = ApiWrapper<Product>(
+  apiClient: myApiClient, // your API client
+  modelName: "Product",
+  fromJson: (json) => Product.fromJson(json),
+);
+
+final product = await api.get("/product");        // single object
+final products = await api.getList("/products"); // list of objects
+
+ .Invalid fields are automatically logged to the console
+
+ .Invalid items in a list are skipped, so your app doesn’t crash
+
+3. Example API Client (for testing)
+
+class FakeApiClient {
+  Future<Map<String, dynamic>> get(String url) async {
+    return {"id": 1, "title": "iPhone", "price": 999};
+  }
+
+  Future<List<dynamic>> getList(String url) async {
+    return [
+      {"id": 1, "title": "iPhone", "price": 999},
+      {"id": 2, "title": "Laptop", "price": "wrong_type"} // invalid
+    ];
+  }
+}
+
+4. SafeParser Logs Example
+
+When parsing fails, your console will show:
+
+  [ModelGuard] Product.price = wrong_type (invalid type)
+
+5. Flutter Widget Example
+import 'package:flutter/material.dart';
+import 'package:model_guard/api_wrapper.dart';
+import 'package:model_guard/example/product.dart';
+
+class ExampleWidget extends StatefulWidget {
+  const ExampleWidget({super.key});
+
+  @override
+  State<ExampleWidget> createState() => _ExampleWidgetState();
+}
+
+class _ExampleWidgetState extends State<ExampleWidget> {
+  List<Product> products = [];
+
+  @override
+  void initState() {
+    super.initState();
+    fetchProducts();
+  }
+
+  void fetchProducts() async {
+    final client = FakeApiClient();
+    final api = ApiWrapper<Product>(
+      apiClient: client,
+      modelName: "Product",
+      fromJson: (json) => Product.fromJson(json),
+    );
+
+    final result = await api.getList("/products");
+    setState(() {
+      products = result;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (products.isEmpty) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    return ListView.builder(
+      itemCount: products.length,
+      itemBuilder: (context, index) {
+        final p = products[index];
+        return ListTile(
+          title: Text(p.title),
+          subtitle: Text("Price: \$${p.price}"),
+        );
+      },
+    );
+  }
+}
+
+// Fake API Client for demo
+class FakeApiClient {
+  Future<Map<String, dynamic>> get(String url) async {
+    return {"id": 1, "title": "iPhone", "price": 999};
+  }
+
+  Future<List<dynamic>> getList(String url) async {
+    return [
+      {"id": 1, "title": "iPhone", "price": 999},
+      {"id": 2, "title": "Laptop", "price": "wrong_type"} // invalid
+    ];
+  }
+}
+
+
