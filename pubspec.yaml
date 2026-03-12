@@ -1,0 +1,24 @@
+name: model_guard
+description: "Automatic JSON parser for Flutter/Dart that logs model name, field name, and wrong values during parsing."
+version: 0.0.1
+homepage:
+
+environment:
+  sdk: ">=3.0.0 <4.0.0"
+  flutter: ">=3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+# For information on the generic Dart part of this file, see the
+# following page: https://dart.dev/tools/pub/pubspec
+
+flutter:
+  # If you want, you can add example assets here later
+  uses-material-design: true
