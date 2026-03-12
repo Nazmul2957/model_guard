@@ -1,6 +1,6 @@
 name: model_guard
 description: "Automatic JSON parser for Flutter/Dart that logs model name, field name, and wrong values during parsing."
-version: 0.0.1
+version: 0.0.2
 homepage: https://github.com/Nazmul2957/model_guard.git
 repository: https://github.com/Nazmul2957/model_guard.git
 license: MIT
