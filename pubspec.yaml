@@ -3,6 +3,7 @@ description: "Automatic JSON parser for Flutter/Dart that logs model name, field
 version: 0.0.1
 homepage: https://github.com/Nazmul2957/model_guard.git
 repository: https://github.com/Nazmul2957/model_guard.git
+license: MIT
 
 environment:
   sdk: ">=3.0.0 <4.0.0"
