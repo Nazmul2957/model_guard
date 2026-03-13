@@ -1,7 +1,7 @@
 
 import 'package:model_guard/model_guard.dart';
 
-import '../api__client_wrapper.dart';
+import '../lib/api__client_wrapper.dart';
 
 class Product implements GuardModel {
   final int id;
