@@ -4,133 +4,143 @@ model_guard is a lightweight Dart/Flutter utility that safely parses JSON respon
 It helps developers detect incorrect API responses without crashing the application.
 
 ✨ Features
-Automatically logs parsing errors
 
-Shows model name + field name + invalid value
+    Automatically logs parsing errors
 
-Works with single objects and lists
+    Shows model name + field name + invalid value
 
-Prevents crashes from invalid JSON
+    Works with single objects and lists
 
-Works with any API client
+    Prevents crashes from invalid JSON
 
-Compatible with Flutter and Dart
+    Works with any API client
+
+    Compatible with Flutter and Dart
+
+
 
 📦 Installation
-Add the dependency to your pubspec.yaml:
 
-yaml
-dependencies:
-model_guard: ^0.0.2
-Then run:
+   Add the dependency to your pubspec.yaml:
 
-bash
-flutter pub get
+    yaml
+      dependencies:
+         model_guard: ^0.0.2
+
+			
+ Then run:
+
+     bash
+       flutter pub get
+		 
 🚀 Usage
 1. Define your model
-   dart
+  
+   
    import 'package:model_guard/guard_model.dart';
 
-class Product implements GuardModel {
-final int id;
-final String title;
-final double price;
+         class Product implements GuardModel {
+         final int id;
+         final String title;
+         final double price;
 
-Product({
-required this.id,
-required this.title,
-required this.price,
-});
+        Product({
+          required this.id,
+          required this.title,
+          required this.price,
+        });
 
-factory Product.fromJson(Map<String, dynamic> json) {
-return Product(
-id: json['id'] ?? 0,
-title: json['title'] ?? '',
-price: (json['price'] ?? 0).toDouble(),
-);
-}
+       factory Product.fromJson(Map<String, dynamic> json) {
+        return Product(
+           id: json['id'] ?? 0,
+           title: json['title'] ?? '',
+           price: (json['price'] ?? 0).toDouble(),
+		);
+		}
 
-@override
-GuardModel fromJson(Map<String, dynamic> json) => Product.fromJson(json);
-}
+		@override
+		GuardModel fromJson(Map<String, dynamic> json) => Product.fromJson(json);
+		}
+
 2. Wrap your API client
-   dart
-   import 'package:model_guard/api_wrapper.dart';
-   import 'product.dart';
+   
+  		 import 'package:model_guard/api_wrapper.dart';
+    	 import 'product.dart';
 
-final api = ApiWrapper<Product>(
-apiClient: myApiClient, // your API client
-modelName: "Product",
-fromJson: (json) => Product.fromJson(json),
-);
+		final api = ApiWrapper<Product>(
+		apiClient: myApiClient, // your API client
+		modelName: "Product",
+		fromJson: (json) => Product.fromJson(json),
+		);
 
-// Fetch single object
-final product = await api.get("/product");
+		// Fetch single object
+		final product = await api.get("/product");
 
-// Fetch list of objects
-final products = await api.getList("/products");
-Note: Invalid fields are automatically logged to the console. Invalid items in a list are skipped, so your app doesn't crash.
+		// Fetch list of objects
+		final products = await api.getList("/products");
+		Note: Invalid fields are automatically logged to the console. Invalid items in a list are skipped, so your app doesn't crash.
 
 📝 Example API Client (for testing)
-dart
-class FakeApiClient {
-Future<Map<String, dynamic>> get(String url) async {
-return {"id": 1, "title": "iPhone", "price": 999};
-}
 
-Future<List<dynamic>> getList(String url) async {
-return [
-{"id": 1, "title": "iPhone", "price": 999},
-{"id": 2, "title": "Laptop", "price": "wrong_type"} // invalid
-];
-}
-}
+		class FakeApiClient {
+			Future<Map<String, dynamic>> get(String url) async {
+			return {"id": 1, "title": "iPhone", "price": 999};
+		}
+
+		Future<List<dynamic>> getList(String url) async {
+		return [
+			{"id": 1, "title": "iPhone", "price": 999},
+			{"id": 2, "title": "Laptop", "price": "wrong_type"} // invalid
+		];
+		}
+	}
 📋 SafeParser Logs Example
-When parsing fails, your console will show:
+		When parsing fails, your console will show:
 
-text
-[ModelGuard] Product.price = wrong_type (invalid type)
+		text
+		[ModelGuard] Product.price = wrong_type (invalid type)
+
 📱 Flutter Widget Example
-dart
-import 'package:flutter/material.dart';
-import 'package:model_guard/api_wrapper.dart';
-import 'product.dart';
 
-class ExampleWidget extends StatefulWidget {
-const ExampleWidget({super.key});
+		import 'package:flutter/material.dart';
+		import 'package:model_guard/api_wrapper.dart';
+		import 'product.dart';
 
-@override
-State<ExampleWidget> createState() => _ExampleWidgetState();
-}
+		class ExampleWidget extends StatefulWidget {
+			const ExampleWidget({super.key});
 
-class _ExampleWidgetState extends State<ExampleWidget> {
-List<Product> products = [];
+			@override
+			State<ExampleWidget> createState() => _ExampleWidgetState();
+		}
 
-@override
-void initState() {
-super.initState();
-fetchProducts();
-}
+		class _ExampleWidgetState extends State<ExampleWidget> {
+		List<Product> products = [];
 
-void fetchProducts() async {
-final client = FakeApiClient();
-final api = ApiWrapper<Product>(
-apiClient: client,
-modelName: "Product",
-fromJson: (json) => Product.fromJson(json),
-);
+		@override
+		void initState() {
+		super.initState();
+		fetchProducts();
+		}
+
+		void fetchProducts() async {
+		final client = FakeApiClient();
+		final api = ApiWrapper<Product>(
+		apiClient: client,
+		modelName: "Product",
+		fromJson: (json) => Product.fromJson(json),
+		);
 
     final result = await api.getList("/products");
     setState(() {
       products = result;
     });
-}
+	}
 
-@override
-Widget build(BuildContext context) {
-if (products.isEmpty) {
-return const Center(child: CircularProgressIndicator());
-}
+		@override
+		Widget build(BuildContext context) {
+		if (products.isEmpty) {
+		return const Center(child: CircularProgressIndicator());
+		}
 
     return ListView.builder(
       itemCount: products.length,
@@ -142,21 +152,22 @@ return const Center(child: CircularProgressIndicator());
         );
       },
     );
-}
-}
+	}
+	}
 
 // Fake API Client for demo
-class FakeApiClient {
-Future<Map<String, dynamic>> get(String url) async {
-return {"id": 1, "title": "iPhone", "price": 999};
-}
 
-Future<List<dynamic>> getList(String url) async {
-return [
-{"id": 1, "title": "iPhone", "price": 999},
-{"id": 2, "title": "Laptop", "price": "wrong_type"} // invalid
-];
-}
-}
+		class FakeApiClient {
+		Future<Map<String, dynamic>> get(String url) async {
+		return {"id": 1, "title": "iPhone", "price": 999};
+		}
+
+		Future<List<dynamic>> getList(String url) async {
+		return [
+		{"id": 1, "title": "iPhone", "price": 999},
+		{"id": 2, "title": "Laptop", "price": "wrong_type"} // invalid
+		];
+		}
+		}
 📄 License
 This project is licensed under the MIT License.
