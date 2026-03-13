@@ -2,6 +2,11 @@
 
 All notable changes to this package will be documented in this file.
 
+## [0.0.7] - 2026-03-14
+### Added
+- added color for show consol
+- Updated `pubspec.yaml` to include license field
+
 ## [0.0.6] - 2026-03-14
 ### Added
 - include main.dart
