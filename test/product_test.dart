@@ -1,6 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
+
+import 'package:model_guard/example/product_model.dart';
 import 'package:model_guard/safe_parser.dart';
-import 'package:model_guard/example/product.dart';
+
 
 void main() {
   group('Product SafeParser Tests', () {

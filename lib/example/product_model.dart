@@ -1,5 +1,3 @@
-
-
 import '../model_guard.dart';
 
 class Product implements GuardModel {

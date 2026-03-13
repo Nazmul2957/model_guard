@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:model_guard/api__client_wrapper.dart';
-import 'package:model_guard/example/product.dart';
+import 'package:model_guard/example/product_model.dart';
+
 
 class FakeApiClient {
   Future<Map<String, dynamic>> get(String url) async {

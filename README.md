@@ -1,29 +1,29 @@
 # model_guard
 
-**Automatic JSON parser for Flutter/Dart** that safely parses API responses and logs **model name + field name + invalid value** whenever parsing fails.
+**model_guard** is a lightweight Dart/Flutter utility that safely parses JSON responses and logs useful debugging information when parsing fails.
 
-It helps developers catch errors in JSON parsing **without crashing the app**, making your API handling more robust.
-
----
-
-## Features
-
-- Automatically logs parsing errors for each field
-- Works for single objects and lists
-- Minimal setup with any API client
-- Compatible with Flutter and Dart
+It helps developers detect incorrect API responses **without crashing the application**.
 
 ---
 
-## Installation
+## ✨ Features
 
-Add this to your `pubspec.yaml`:
+- Automatically logs parsing errors
+- Shows **model name + field name + invalid value**
+- Works with **single objects and lists**
+- Prevents crashes from invalid JSON
+- Works with **any API client**
+- Compatible with **Flutter and Dart**
+
+---
+
+## 📦 Installation
+
+Add the dependency:
 
 ```yaml
 dependencies:
-  model_guard:
-    git:
-      url: https://github.com/YOUR_GITHUB_USERNAME/model_guard.git
+  model_guard: ^0.0.2
 
 Then run:
     flutter pub get
