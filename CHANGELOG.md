@@ -2,6 +2,11 @@
 
 All notable changes to this package will be documented in this file.
 
+## [0.0.6] - 2026-03-14
+### Added
+- include main.dart
+- Updated `pubspec.yaml` to include license field
+
 ## [0.0.5] - 2026-03-14
 ### Added
 - include main.dart
