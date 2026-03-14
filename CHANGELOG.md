@@ -2,6 +2,11 @@
 
 All notable changes to this package will be documented in this file.
 
+## [0.0.8] - 2026-03-15
+### Added
+- update model guard
+- Updated `pubspec.yaml` to include license field
+
 ## [0.0.7] - 2026-03-14
 ### Added
 - added color for show consol
