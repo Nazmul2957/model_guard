@@ -1,9 +1,13 @@
-// lib/safe_parser.dart
-
-
-
+/// Utility class that safely parses JSON into Dart models.
+///
+/// This class wraps model parsing in try-catch blocks so
+/// invalid API responses do not crash the application.
+/// Instead, it logs useful debugging information.
 class SafeParser {
-  /// Parse a single JSON object into a model
+
+  /// Parses a single JSON object into a model.
+  ///
+  /// If parsing fails, the error is logged and `null` is returned.
   static T? parse<T>({
     required String modelName,
     required Map<String, dynamic> json,
@@ -22,15 +26,20 @@ class SafeParser {
     }
   }
 
-  /// Parse a list of JSON objects into a list of models
+  /// Parses a list of JSON objects into a list of models.
+  ///
+  /// Invalid items are skipped while valid ones are added
+  /// to the returned list.
   static List<T> parseList<T>({
     required String modelName,
     required List<dynamic> jsonList,
     required T Function(Map<String, dynamic>) fromJson,
   }) {
     List<T> result = [];
+
     for (var i = 0; i < jsonList.length; i++) {
       final item = jsonList[i];
+
       try {
         final model = fromJson(item);
         result.add(model);
@@ -42,6 +51,7 @@ class SafeParser {
         print("Item: $item");
       }
     }
+
     return result;
   }
 }
