@@ -4,27 +4,20 @@
 bool isType(dynamic value, Type type) {
   if (value == null) return false;
 
-  switch (type) {
-    case int:
-      return value is int;
-
-    case double:
-      return value is double || value is int;
-
-    case String:
-      return value is String;
-
-    case bool:
-      return value is bool;
-
-    case List:
-      return value is List;
-
-    case Map:
-      return value is Map;
-
-    default:
-      return true; // assume correct for custom models
+  if (type == int) {
+    return value is int;
+  } else if (type == double) {
+    return value is double || value is int;
+  } else if (type == String) {
+    return value is String;
+  } else if (type == bool) {
+    return value is bool;
+  } else if (type == List) {
+    return value is List;
+  } else if (type == Map) {
+    return value is Map;
+  } else {
+    return true; // assume correct for custom models
   }
 }
 
